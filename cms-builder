@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+use tes\CmsBuilder\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+
+if (PHP_SAPI !== 'cli') {
+  echo 'Warning: tes-builder should be invoked via the CLI version of PHP, not the '.PHP_SAPI.' SAPI'.PHP_EOL;
+}
+
+$autoloader = require __DIR__ . '/src/bootstrap.php';
+
+// platform-docker uses CLI_ROOT to find resources.
+define('CLI_ROOT', __DIR__ . '/vendor/mglaman/platform-docker');
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
+$input = new ArgvInput();
+$application = new Application();
+$application->run($input);
