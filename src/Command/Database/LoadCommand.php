@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
+use tes\CmsBuilder\Application;
 
 class LoadCommand extends Command
 {
@@ -25,7 +26,7 @@ class LoadCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $local = Platform::rootDir() . '/.cms-builder/database.tar.gz';
+        $local = Application::getCmsBuilderDirectory() . '/database.tar.gz';
 
         if (!file_exists($local)) {
             $this->getApplication()->find('database:get')->run($input, $output);

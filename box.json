@@ -1,0 +1,27 @@
+{
+    "directories": [
+        "src",
+        "vendor/mglaman/platform-docker/resources"
+    ],
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": [
+                "Tests",
+                "tests"
+            ],
+            "in": "vendor"
+        }
+    ],
+    "chmod": "0755",
+    "files": [
+        "cms-builder"
+    ],
+    "files-bin": [
+        "vendor/symfony/console/Resources/bin/hiddeninput.exe"
+    ],
+    "main": "cms-builder",
+    "output": "cms-builder.phar",
+    "stub": true
+}
+

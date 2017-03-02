@@ -94,12 +94,32 @@ class Application extends ParentApplication
         date_default_timezone_set($timezone);
     }
 
-    public function ensureDirectory() {
-        $directory = Platform::rootDir() . '/.cms-builder';
+    public static function getCmsBuilderDirectory() {
+        $directory = self::getUserDirectory() . '/.cms-builder/' . Platform::projectName();
         if (!is_dir($directory)) {
             $file_system = new Filesystem();
-            $file_system->mkdir(Platform::rootDir() . '/.cms-builder');
+            $file_system->mkdir($directory);
         }
+        return $directory;
+    }
+
+    /**
+     * @return string The formal user home as detected from environment parameters
+     * @throws \RuntimeException If the user home could not reliably be determined
+     */
+    public static function getUserDirectory()
+    {
+        if (false !== ($home = getenv('HOME'))) {
+            return $home;
+        }
+        if (defined('PHP_WINDOWS_VERSION_BUILD') && false !== ($home = getenv('USERPROFILE'))) {
+            return $home;
+        }
+        if (function_exists('posix_getuid') && function_exists('posix_getpwuid')) {
+            $info = posix_getpwuid(posix_getuid());
+            return $info['dir'];
+        }
+        throw new \RuntimeException('Could not determine user directory');
     }
 
 }

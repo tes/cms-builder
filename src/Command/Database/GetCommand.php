@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\ProcessBuilder;
+use tes\CmsBuilder\Application;
 use tes\CmsBuilder\Config;
 
 class GetCommand extends Command
@@ -27,8 +28,7 @@ class GetCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $remote = Config::get('database');
-        $local = Platform::rootDir() . '/.cms-builder/database.tar.gz';
-        $this->getApplication()->ensureDirectory();
+        $local = Application::getCmsBuilderDirectory() . '/database.tar.gz';
 
         if (file_exists($local)) {
             $curl = curl_init($remote);
