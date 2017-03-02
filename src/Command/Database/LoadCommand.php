@@ -2,6 +2,8 @@
 
 namespace tes\CmsBuilder\Command\Database;
 
+use mglaman\Docker\Compose;
+use mglaman\Docker\Docker;
 use mglaman\PlatformDocker\Platform;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,6 +28,21 @@ class LoadCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // See if the nginx-proxy is running and use that if it is.
+        // @todo this health check is not working.
+        $db_container = Compose::getContainerName(Platform::projectName(), 'mariadb');
+        $process = Docker::inspect(['--format="{{ .State.Running }}"', $db_container], true);
+        $retry = 0;
+        while (strpos($process->getOutput(), 'true') === FALSE) {
+            sleep(10);
+            $retry++;
+            if ($retry > 5) {
+                $output->writeln("<error>Database server not available</error>");
+                return 1;
+            }
+            $process = Docker::inspect(['--format="{{ .State.Running }}"', $db_container], true);
+        }
+
         $local = Application::getCmsBuilderDirectory() . '/database.tar.gz';
 
         if (!file_exists($local)) {

@@ -5,6 +5,8 @@ namespace tes\CmsBuilder;
 use mglaman\PlatformDocker\Command\Docker\RebuildCommand;
 use mglaman\PlatformDocker\Command\Docker\StopCommand;
 use mglaman\PlatformDocker\Command\Docker\UpCommand;
+use mglaman\PlatformDocker\Command\DrushCommand;
+use mglaman\PlatformDocker\Command\LinkCommand;
 use mglaman\PlatformDocker\Platform;
 use Symfony\Component\Console\Application as ParentApplication;
 use Symfony\Component\Console\Helper\DebugFormatterHelper;
@@ -40,6 +42,8 @@ class Application extends ParentApplication
         $commands[] = new Command\BuildCommand();
         $commands[] = new Command\Platform\BuildCommand();
         $commands[] = new Command\PlatformDocker\InitCommand();
+        $commands[] = new LinkCommand();
+        $commands[] = new DrushCommand();
         // Add Platform Docker commands
         $commands[] = new Command\CommandWrapper(new UpCommand());
         $commands[] = new Command\CommandWrapper(new StopCommand());

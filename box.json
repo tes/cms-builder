@@ -1,7 +1,8 @@
 {
     "directories": [
         "src",
-        "vendor/mglaman/platform-docker/resources"
+        "vendor/mglaman/platform-docker/resources",
+        "vendor/mglaman/platform-docker/src"
     ],
     "finder": [
         {
