@@ -2,14 +2,8 @@
     "name": "tes/cms-builder",
     "description": "Allows easy set up TES Drupal sites",
     "type": "library",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/alexpott/platform-docker"
-        }
-    ],
     "require": {
-        "mglaman/platform-docker": "dev-multiple-php-versions",
+        "mglaman/platform-docker": "dev-develop",
         "symfony/console": "^2.7",
         "symfony/filesystem": "^3.0",
         "symfony/process": "^3.0",
