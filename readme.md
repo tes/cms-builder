@@ -4,8 +4,8 @@
 
 * [Composer](https://getcomposer.org/)
 * [Docker](https://www.docker.com/)
-* [Platform CLI]
-* [Drush]
+* [Platform CLI](https://docs.platform.sh/overview/cli.html)
+* [Drush](http://docs.drush.org/en/master/install/)
 
 Note that after installing Docker you have to start the application to complete the command line install
 
