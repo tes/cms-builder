@@ -4,6 +4,7 @@ namespace tes\CmsBuilder\Command\Database;
 
 use mglaman\Docker\Compose;
 use mglaman\Docker\Docker;
+use mglaman\PlatformDocker\Mysql\Mysql;
 use mglaman\PlatformDocker\Platform;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,7 +45,7 @@ class LoadCommand extends Command
         $retry = 0;
         while (TRUE) {
             try {
-                new \PDO($dsn, 'mysql', 'mysql');
+                new \PDO($dsn, Mysql::getMysqlUser(), Mysql::getMysqlPassword());
                 break;
             }
             catch (\Exception $e) {
