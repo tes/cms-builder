@@ -16,6 +16,9 @@ use Symfony\Component\Console\Helper\ProcessHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * The cms-builder application.
+ */
 class Application extends ParentApplication
 {
     /**

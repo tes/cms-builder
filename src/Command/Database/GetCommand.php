@@ -2,7 +2,6 @@
 
 namespace tes\CmsBuilder\Command\Database;
 
-use mglaman\PlatformDocker\Platform;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -10,6 +9,11 @@ use Symfony\Component\Process\ProcessBuilder;
 use tes\CmsBuilder\Application;
 use tes\CmsBuilder\Config;
 
+/**
+ * Gets a database from the Tes jenkins server.
+ *
+ * Depends on curl.
+ */
 class GetCommand extends Command
 {
     /**

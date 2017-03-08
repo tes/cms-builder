@@ -3,74 +3,73 @@
 namespace tes\CmsBuilder;
 
 use mglaman\PlatformDocker\Platform;
+use mglaman\PlatformDocker\YamlConfigReader;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Reads and writes .cms-builder.yml configuration files.
+ */
 class Config
 {
-    const CMS_BUILDER_CONFIG = '.cms-builder.yml';
+    use YamlConfigReader;
 
-    protected static $instance;
-    protected $config = array();
-
-    protected static function instance($refresh = false)
+    protected function getConfigFilePath()
     {
-        if (self::$instance === null || $refresh === true) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
+        return '.cms-builder.yml';
     }
 
-    public function __construct()
-    {
-        if ((empty($this->config)) && file_exists(Platform::rootDir() . '/' . self::CMS_BUILDER_CONFIG)) {
-            $path = Platform::rootDir() . '/' . self::CMS_BUILDER_CONFIG;
-            $this->config = Yaml::parse(file_get_contents($path));
-        }
-    }
-
-    public static function get($key = null)
-    {
-        return self::instance()->getConfig($key);
-    }
-
+    /**
+     * Sets a configuration value for the specified key.
+     *
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return $this
+     */
     public static function set($key, $value)
     {
         return self::instance()->setConfig($key, $value);
     }
 
-    public static function write($destinationDir = null)
-    {
-        if (!$destinationDir) {
-            $destinationDir = Platform::rootDir();
-        }
-        return self::instance()->writeConfig($destinationDir);
-    }
-
-    public function getConfig($key = null)
-    {
-        if ($key) {
-            return isset($this->config[$key]) ? $this->config[$key] : null;
-        }
-        return $this->config;
-    }
-
+    /**
+     * Sets a configuration value for the specified key.
+     *
+     * @param $key
+     * @param $value
+     *
+     * @return $this
+     */
     public function setConfig($key, $value)
     {
         $this->config[$key] = $value;
         return $this;
     }
 
-    public static function reset()
+    /**
+     * Writes a file to a directory. The default directory is the platform project root directory.
+     *
+     * @param string $destinationDir
+     *
+     * @return $this
+     */
+    public static function write($destinationDir = null)
     {
-        return self::instance(true);
+        return self::instance()->writeConfig($destinationDir);
     }
 
+    /**
+     * Writes a file to a directory. The default directory is the platform project root directory.
+     *
+     * @param string $destinationDir
+     *
+     * @return $this
+     */
     public function writeConfig($destinationDir = null)
     {
         if (!$destinationDir) {
             $destinationDir = Platform::rootDir();
         }
-        return file_put_contents($destinationDir . '/' . self::CMS_BUILDER_CONFIG, Yaml::dump($this->config, 2));
+        file_put_contents($destinationDir . '/' . $this->getConfigFilePath(), Yaml::dump($this->config, 2));
+        return $this;
     }
 }

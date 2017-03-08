@@ -11,6 +11,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 use tes\CmsBuilder\Application;
 
+/**
+ * Loads a database dump.
+ *
+ * Depends on gunzip, drush and mysql.
+ */
 class LoadCommand extends Command
 {
     /**

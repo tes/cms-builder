@@ -8,10 +8,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Created by PhpStorm.
- * User: alex
- * Date: 22/02/2017
- * Time: 13:56
+ * Sets up Platform and Docker Compose files.
+ *
+ * Depends on docker.
  */
 class InitCommand extends PDInitCommand
 {

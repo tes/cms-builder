@@ -8,6 +8,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
+/**
+ * Builds a Tes site.
+ *
+ * Depends on docker, platform.sh cli, curl, gunzip, drush, mysql.
+ */
 class BuildCommand extends Command
 {
 
