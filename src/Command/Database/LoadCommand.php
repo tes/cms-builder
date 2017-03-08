@@ -28,19 +28,28 @@ class LoadCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // See if the nginx-proxy is running and use that if it is.
-        // @todo this health check is not working.
+        // Get the docker database port.
         $db_container = Compose::getContainerName(Platform::projectName(), 'mariadb');
-        $process = Docker::inspect(['--format="{{ .State.Running }}"', $db_container], true);
+        $inspect = Docker::inspect(['--format=\'{{(index (index .NetworkSettings.Ports "3306/tcp") 0).HostPort}}\'', $db_container], true);
+        preg_match('!\d+!', $inspect->getOutput(), $matches);
+        $port = $matches[0];
+
+        // Ensure that we can connect to the database before loading the data.
+        $dsn = "mysql:dbname=data;host=127.0.0.1:$port;";
         $retry = 0;
-        while (strpos($process->getOutput(), 'true') === FALSE) {
+        while (TRUE) {
+            try {
+                new \PDO($dsn, 'mysql', 'mysql');
+                break;
+            }
+            catch (\Exception $e) {
+            }
             sleep(10);
             $retry++;
             if ($retry > 5) {
                 $output->writeln("<error>Database server not available</error>");
                 return 1;
             }
-            $process = Docker::inspect(['--format="{{ .State.Running }}"', $db_container], true);
         }
 
         $local = Application::getCmsBuilderDirectory() . '/database.tar.gz';

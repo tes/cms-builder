@@ -41,6 +41,7 @@ class GetCommand extends Command
             $result = curl_exec($curl);
             if ($result === false) {
                 $output->writeln('<error>Curl error</error>: ' . curl_error($curl));
+                $output->writeln("<info>Builds will use the existing database dump ($local). In order to download a new dump you might need to VPN into the TES network.</info>");
                 return;
             }
             $remote_timestamp = curl_getinfo($curl, CURLINFO_FILETIME);
