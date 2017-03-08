@@ -28,7 +28,7 @@ cms-builder build
 
 Once the build is complete you can open the site in a browser by doing:
 ```bash
-cms-builder
+cms-builder link
 ```
 
 
