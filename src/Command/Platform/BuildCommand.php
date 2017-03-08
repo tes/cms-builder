@@ -40,13 +40,14 @@ class BuildCommand extends Command
         $builder->setTimeout(null);
         $builder->enableOutput();
         $process = $builder->getProcess();
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            $output->writeln($process->getErrorOutput());
+        $output->writeln('<info>Running platform build</info>');
+        if ($output->getVerbosity() >= $output::VERBOSITY_VERBOSE) {
+            $output->writeln($process->getCommandLine());
         }
-        else {
-            $output->write($process->getOutput());
-        }
+        $function  = function ($type, $buffer) use ($output, $process) {
+            $output->write($buffer);
+        };
+        $process->start($function);
+        $process->wait();
     }
 }
