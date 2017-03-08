@@ -5,39 +5,31 @@
 * [Composer](https://getcomposer.org/)
 * [Docker](https://www.docker.com/)
 * [Platform CLI]
-* [Drush]?
-* [Docker Compose](https://docs.docker.com/compose/) (Comes with the Docker App but you have to launch the app to install it)
-* [Platform Docker](https://github.com/mglaman/platform-docker)
+* [Drush]
 
-Note that on OSx after installing Docker you have to start the application to
-commplete the command line install
-### Set up
-dnsmasq (OS X, Linux, Windows)
-`address=/platform/127.0.0.1`
+Note that after installing Docker you have to start the application to complete the command line install
 
 ### Installation
-curl https (copy from composer)
+You may download a ready-to-use version as a Phar:
+
+```sh
+$ curl -LSs https://github.com/tes/cms-builder/raw/master/cms-builder.phar -o cms-builder
+```
+
+The command will download it to the current directory. From there, you may place it anywhere that will make it easier for you to access (such as `/usr/local/bin`) and chmod it to `755`.
 
 ## Usage
-Clone a project from github and run the `tes-install init` command, for example:
+Clone a project from github and run the `cms-builder build` command, for example:
 ```bash
 git clone git@github.com:tes/cms-the-platform.git
 cd cms-the-platform
 cms-builder build
 ```
 
-Visit
- 
+Once the build is complete you can open the site in a browser by doing:
+```bash
+cms-builder
+```
+
 
 Profit!!!
-
-### Notes
-
-Manual steps
-```bash
-git clone git@github.com:tes/cms-the-platform.git
-cd cms-the-platform
-platform build
-platform-docker init
-Now to get the DB and do it with drush
-```
