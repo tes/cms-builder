@@ -43,6 +43,7 @@ class Application extends ParentApplication
         $commands[] = new Command\Database\GetCommand();
         $commands[] = new Command\Database\LoadCommand();
         $commands[] = new Command\BuildCommand();
+        $commands[] = new Command\PostBuildCommand();
         $commands[] = new Command\Platform\BuildCommand();
         $commands[] = new Command\PlatformDocker\InitCommand();
         $commands[] = new LinkCommand();

@@ -36,6 +36,8 @@ class BuildCommand extends Command
             $this->getApplication()->find('platform:build'),
             $this->getApplication()->find('platform-docker:init'),
             $this->getApplication()->find('database:get'),
+            $this->getApplication()->find('database:load'),
+            $this->getApplication()->find('post-build')
         ];
 
         foreach ($commands as $command) {
@@ -45,22 +47,7 @@ class BuildCommand extends Command
                 return $return;
             }
         }
-
-        // @todo determine health of mysql server somehow.
-        sleep(20);
-        $this->getApplication()->find('database:load')->run($input, $output);
-
-        // Enable stage_file_proxy and devel modules.
-        $process = new Process("drush en stage_file_proxy devel -y", Platform::webDir(), null, null, null);
-        if ($output->getVerbosity() >= $output::VERBOSITY_VERBOSE) {
-            $output->writeln($process->getCommandLine());
-        }
-        $function  = function ($type, $buffer) use ($output, $process) {
-            $output->write($buffer);
-        };
-
-        $process->start($function);
-        $process->wait();
+        return 0;
     }
 
 

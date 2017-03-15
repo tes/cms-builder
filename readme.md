@@ -31,5 +31,10 @@ Once the build is complete you can open the site in a browser by doing:
 cms-builder link
 ```
 
+## Setting up a new project
+### Databases
+@todo
+### Post build commands
+@todo
 
 Profit!!!
