@@ -32,9 +32,27 @@ cms-builder link
 ```
 
 ## Setting up a new project
-### Databases
-@todo
-### Post build commands
-@todo
+Add this to the project's .gitignore
+```
+# ignore cms-builder artifacts
+.cms-builder/
+docker/
+.platform-project
+docker-compose.yml
+```
+
+Create a .cms-builder.yml file in the project root. Example contents:
+```yaml
+database: http://jenkins-native.tescloud.com/view/CMS/job/cms-backup-tes-live/ws/database.sql.gz
+post_build:
+  docker:
+    solr:
+      - 'rm -rf /opt/solr/example/solr/tes_core'
+      - 'mkdir /opt/solr/example/solr/tes_core'
+      - 'echo name=tes_core > /opt/solr/example/solr/tes_core/core.properties'
+      - 'cp -r /opt/solr/example/solr/collection1/conf /opt/solr/example/solr/tes_core'
+  drush:
+    - 'en stage_file_proxy devel -y'
+```
 
 Profit!!!
