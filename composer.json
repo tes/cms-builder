@@ -10,9 +10,14 @@
         {
             "type": "vcs",
             "url": "https://github.com/alexpott/docker-helper"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/alexpott/toolstack-helper"
         }
     ],
     "require": {
+        "mglaman/toolstack-helper": "dev-fix-drupal-detection",
         "mglaman/platform-docker": "dev-tes",
         "mglaman/docker-helper": "dev-exec",
         "symfony/console": "^2.7",
