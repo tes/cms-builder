@@ -47,7 +47,13 @@ class BuildCommand extends Command
         $function  = function ($type, $buffer) use ($output, $process) {
             $output->write($buffer);
         };
+        $run_again = clone $process;
         $process->start($function);
         $process->wait();
+
+        // Unfortunately platform build does not always get the symlinks correct the first time.
+        // @see https://github.com/platformsh/platformsh-cli/issues/578
+        $run_again->start($function);
+        $run_again->wait();
     }
 }
