@@ -2,6 +2,7 @@
 ## One-time tasks
 ### Requirements
 
+* [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * [Composer](https://getcomposer.org/)
 * [Docker](https://www.docker.com/)
 * [Platform CLI](https://docs.platform.sh/overview/cli.html)
