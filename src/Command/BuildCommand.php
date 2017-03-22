@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
+use tes\CmsBuilder\Config;
 
 /**
  * Builds a Tes site.
@@ -32,13 +33,14 @@ class BuildCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var \Symfony\Component\Console\Command\Command[] $commands */
-        $commands = [
-            $this->getApplication()->find('platform:build'),
-            $this->getApplication()->find('platform-docker:init'),
-            $this->getApplication()->find('database:get'),
-            $this->getApplication()->find('database:load'),
-            $this->getApplication()->find('post-build')
-        ];
+        $commands = [];
+        $commands[] = $this->getApplication()->find('platform:build');
+        $commands[] = $this->getApplication()->find('platform-docker:init');
+        if (Config::get('database')) {
+            $commands[] = $this->getApplication()->find('database:get');
+            $commands[] = $this->getApplication()->find('database:load');
+        }
+        $commands[] = $this->getApplication()->find('post-build');
 
         foreach ($commands as $command) {
             $return = $command->run($input, $output);
