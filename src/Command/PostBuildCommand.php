@@ -9,6 +9,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
+use tes\CmsBuilder\Application;
 use tes\CmsBuilder\Config;
 
 /**
@@ -34,6 +35,10 @@ class PostBuildCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (!Application::databaseServerAvailable()) {
+            $output->writeln("<error>Database server not available</error>");
+            return 1;
+        }
         // Run post build commands.
         $post_build_cmds = Config::get('post_build') + ['docker' => [], 'drush' => []];
 

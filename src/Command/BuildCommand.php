@@ -2,11 +2,9 @@
 
 namespace tes\CmsBuilder\Command;
 
-use mglaman\PlatformDocker\Platform;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 use tes\CmsBuilder\Config;
 
 /**
@@ -43,6 +41,8 @@ class BuildCommand extends Command
         $commands[] = $this->getApplication()->find('post-build');
 
         foreach ($commands as $command) {
+            // For some reason this helps fix a bug whilst building a vanilla d8 project.
+            Config::reset();
             $return = $command->run($input, $output);
             if ($return !== 0) {
                 $output->writeln('<error>Command '. $command->getName() . ' failed</error>');

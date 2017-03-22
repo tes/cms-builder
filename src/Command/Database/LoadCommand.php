@@ -2,9 +2,6 @@
 
 namespace tes\CmsBuilder\Command\Database;
 
-use mglaman\Docker\Compose;
-use mglaman\Docker\Docker;
-use mglaman\PlatformDocker\Mysql\Mysql;
 use mglaman\PlatformDocker\Platform;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,28 +31,9 @@ class LoadCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Get the docker database port.
-        $db_container = Compose::getContainerName(Platform::projectName(), 'mariadb');
-        $inspect = Docker::inspect(['--format=\'{{(index (index .NetworkSettings.Ports "3306/tcp") 0).HostPort}}\'', $db_container], true);
-        preg_match('!\d+!', $inspect->getOutput(), $matches);
-        $port = $matches[0];
-
-        // Ensure that we can connect to the database before loading the data.
-        $dsn = "mysql:dbname=data;host=127.0.0.1:$port;";
-        $retry = 0;
-        while (TRUE) {
-            try {
-                new \PDO($dsn, Mysql::getMysqlUser(), Mysql::getMysqlPassword());
-                break;
-            }
-            catch (\Exception $e) {
-            }
-            sleep(10);
-            $retry++;
-            if ($retry > 5) {
-                $output->writeln("<error>Database server not available</error>");
-                return 1;
-            }
+        if (!Application::databaseServerAvailable()) {
+            $output->writeln("<error>Database server not available</error>");
+            return 1;
         }
 
         $local = Application::getCmsBuilderDirectory() . '/database.tar.gz';

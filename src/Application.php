@@ -2,12 +2,15 @@
 
 namespace tes\CmsBuilder;
 
+use mglaman\Docker\Compose;
+use mglaman\Docker\Docker;
 use mglaman\PlatformDocker\Command\Docker\RebuildCommand;
 use mglaman\PlatformDocker\Command\Docker\StopCommand;
 use mglaman\PlatformDocker\Command\Docker\UpCommand;
 use mglaman\PlatformDocker\Command\DrushCommand;
 use mglaman\PlatformDocker\Command\LinkCommand;
 use mglaman\PlatformDocker\Platform;
+use mglaman\PlatformDocker\Mysql\Mysql;
 use Symfony\Component\Console\Application as ParentApplication;
 use Symfony\Component\Console\Helper\DebugFormatterHelper;
 use Symfony\Component\Console\Helper\FormatterHelper;
@@ -128,6 +131,38 @@ class Application extends ParentApplication
             return $info['dir'];
         }
         throw new \RuntimeException('Could not determine user directory');
+    }
+
+    /**
+     * Determines if the database server is available.
+     *
+     * @return bool
+     *   TRUE if the database is available, FALSE if not.
+     */
+    public static function databaseServerAvailable() {
+        // Get the docker database port.
+        $db_container = Compose::getContainerName(Platform::projectName(), 'mariadb');
+        $inspect = Docker::inspect(['--format=\'{{(index (index .NetworkSettings.Ports "3306/tcp") 0).HostPort}}\'', $db_container], true);
+        preg_match('!\d+!', $inspect->getOutput(), $matches);
+        $port = $matches[0];
+
+        // Ensure that we can connect to the database before loading the data.
+        $dsn = "mysql:dbname=data;host=127.0.0.1:$port;";
+        $retry = 0;
+        while (TRUE) {
+            try {
+                new \PDO($dsn, Mysql::getMysqlUser(), Mysql::getMysqlPassword());
+                break;
+            }
+            catch (\Exception $e) {
+            }
+            sleep(10);
+            $retry++;
+            if ($retry > 5) {
+                return FALSE;
+            }
+        }
+        return TRUE;
     }
 
 }
