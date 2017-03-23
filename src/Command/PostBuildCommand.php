@@ -41,13 +41,21 @@ class PostBuildCommand extends Command
         }
         // Run post build commands.
         $post_build_cmds = Config::get('post_build') ?: [];
-        $post_build_cmds = $post_build_cmds + ['docker' => [], 'drush' => []];
+        $post_build_cmds = $post_build_cmds + ['bash' => [], 'docker' => [], 'drush' => []];
 
         // Function to pass to \Symfony\Component\Process\Process::start() so we can see the output.
         $function  = function ($type, $buffer) use ($output) {
             $output->write($buffer);
         };
 
+        foreach ($post_build_cmds['bash'] as $command) {
+            $process = new Process($command);
+            if ($output->getVerbosity() >= $output::VERBOSITY_VERBOSE) {
+                $output->writeln($process->getCommandLine());
+            }
+            $process->start($function);
+            $process->wait();
+        }
         foreach ($post_build_cmds['docker'] as $container => $commands) {
             $container_name = Compose::getContainerName(Platform::projectName(), $container);
             foreach ($commands as $command) {
