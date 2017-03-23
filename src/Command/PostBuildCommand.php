@@ -49,7 +49,7 @@ class PostBuildCommand extends Command
         };
 
         foreach ($post_build_cmds['bash'] as $command) {
-            $process = new Process($command);
+            $process = new Process($command, Platform::rootDir());
             if ($output->getVerbosity() >= $output::VERBOSITY_VERBOSE) {
                 $output->writeln($process->getCommandLine());
             }

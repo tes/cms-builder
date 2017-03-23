@@ -46,6 +46,9 @@ Create a .cms-builder.yml file in the project root. Example contents:
 ```yaml
 database: http://jenkins-native.tescloud.com/view/CMS/job/cms-backup-tes-live/ws/database.sql.gz
 post_build:
+  bash:
+    # Bash commands in the post_build are run from the root directory of the project
+    - 'cd _www/sites/all/modules/shared && rm -rf cms_modules && git clone git@github.com:tes/cms-modules.git cms_modules'
   docker:
     solr:
       - 'rm -rf /opt/solr/example/solr/tes_core'
