@@ -16,7 +16,8 @@
     ],
     "chmod": "0755",
     "files": [
-        "cms-builder"
+        "cms-builder",
+        "License.md"
     ],
     "files-bin": [
         "vendor/symfony/console/Resources/bin/hiddeninput.exe"
