@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 use tes\CmsBuilder\Application;
+use tes\CmsBuilder\Config;
 
 /**
  * Loads a database dump.
@@ -31,6 +32,11 @@ class LoadCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (empty(Config::get('database'))) {
+            $output->writeln('<info>No database to load as \'database\' key not set in .cms-builder.yml</info>');
+            return;
+        }
+
         if (!Application::databaseServerAvailable()) {
             $output->writeln("<error>Database server not available</error>");
             return 1;

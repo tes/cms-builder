@@ -32,6 +32,10 @@ class GetCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $remote = Config::get('database');
+        if (empty($remote)) {
+            $output->writeln('<info>No remote database to get as \'database\' key not set in .cms-builder.yml</info>');
+            return;
+        }
         $local = Application::getCmsBuilderDirectory() . '/database.tar.gz';
 
         if (file_exists($local)) {

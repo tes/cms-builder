@@ -40,7 +40,8 @@ class PostBuildCommand extends Command
             return 1;
         }
         // Run post build commands.
-        $post_build_cmds = Config::get('post_build') + ['docker' => [], 'drush' => []];
+        $post_build_cmds = Config::get('post_build') ?: [];
+        $post_build_cmds = $post_build_cmds + ['docker' => [], 'drush' => []];
 
         // Function to pass to \Symfony\Component\Process\Process::start() so we can see the output.
         $function  = function ($type, $buffer) use ($output) {
