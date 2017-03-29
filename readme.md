@@ -19,6 +19,12 @@ $ curl -LSs https://github.com/tes/cms-builder/raw/master/cms-builder.phar -o cm
 
 The command will download it to the current directory. From there, you may place it anywhere that will make it easier for you to access (such as `/usr/local/bin`) and chmod it to `755`.
 
+### Update
+You can run the self-update command.
+```sh
+cms-builder self-update
+```
+
 ## Usage
 Clone a project from github and run the `cms-builder build` command, for example:
 ```bash

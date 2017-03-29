@@ -18,6 +18,7 @@ use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\ProcessHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Filesystem\Filesystem;
+use tes\CmsBuilder\Command\SelfUpdateCommand;
 
 /**
  * The cms-builder application.
@@ -51,6 +52,7 @@ class Application extends ParentApplication
         $commands[] = new Command\PlatformDocker\InitCommand();
         $commands[] = new LinkCommand();
         $commands[] = new DrushCommand();
+        $commands[] = new SelfUpdateCommand();
         // Add Platform Docker commands
         $commands[] = new Command\CommandWrapper(new UpCommand());
         $commands[] = new Command\CommandWrapper(new StopCommand());
