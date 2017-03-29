@@ -21,7 +21,8 @@ class RemoteSha1Strategy extends ShaStrategy
      */
     public function getCurrentRemoteVersion(Updater $updater)
     {
-        return hash_file('sha1', $this->getPharUrl());
+        $result = humbug_get_contents($this->getPharUrl());
+        return hash('sha1', $result);
     }
 
 }
