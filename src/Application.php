@@ -17,6 +17,7 @@ use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\ProcessHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use tes\CmsBuilder\Command\SelfUpdateCommand;
 
@@ -141,10 +142,20 @@ class Application extends ParentApplication
      * @return bool
      *   TRUE if the database is available, FALSE if not.
      */
-    public static function databaseServerAvailable() {
+    public static function databaseServerAvailable(OutputInterface $output) {
         // Get the docker database port.
         $db_container = Compose::getContainerName(Platform::projectName(), 'mariadb');
         $inspect = Docker::inspect(['--format=\'{{(index (index .NetworkSettings.Ports "3306/tcp") 0).HostPort}}\'', $db_container], true);
+
+        if (!$inspect->isSuccessful()) {
+            $output->writeln("<error>Command failed:</error> " . $inspect->getCommandLine());
+            if ($output->getVerbosity() >= $output::VERBOSITY_VERBOSE) {
+                $output->writeln("Error output: " . $inspect->getErrorOutput());
+                $output->writeln("STD output: " . $inspect->getOutput());
+            }
+            return FALSE;
+        }
+
         preg_match('!\d+!', $inspect->getOutput(), $matches);
         $port = $matches[0];
 
@@ -152,6 +163,9 @@ class Application extends ParentApplication
         $dsn = "mysql:dbname=data;host=127.0.0.1:$port;";
         $retry = 0;
         while (TRUE) {
+            if ($output->getVerbosity() >= $output::VERBOSITY_VERBOSE) {
+                $output->writeln("<info>Trying to connect to database using $dsn user:" . Mysql::getMysqlUser() . " pass:" . Mysql::getMysqlPassword());
+            }
             try {
                 new \PDO($dsn, Mysql::getMysqlUser(), Mysql::getMysqlPassword());
                 break;

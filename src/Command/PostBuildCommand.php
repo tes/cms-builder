@@ -35,7 +35,7 @@ class PostBuildCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!Application::databaseServerAvailable()) {
+        if (!Application::databaseServerAvailable($output)) {
             $output->writeln("<error>Database server not available</error>");
             return 1;
         }

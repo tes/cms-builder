@@ -37,7 +37,7 @@ class LoadCommand extends Command
             return;
         }
 
-        if (!Application::databaseServerAvailable()) {
+        if (!Application::databaseServerAvailable($output)) {
             $output->writeln("<error>Database server not available</error>");
             return 1;
         }
