@@ -2,6 +2,8 @@
 ## One-time tasks
 ### Requirements
 
+* PHP
+* Mysql client
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * [Composer](https://getcomposer.org/)
 * [Docker](https://www.docker.com/)
