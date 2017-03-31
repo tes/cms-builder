@@ -14,7 +14,7 @@ Ubuntu has started and you are logged in.
 ```bash
 # Install PHP and maria client
 sudo apt-get update
-sudo apt install curl php7.0 php7.0-curl php7.0-mbstring php7.0-xml php7.0-bcmath php7.0-gd php7.0-intl php7.0-mbstring php7.0-mcrypt php7.0-opcache php7.0-readline php7.0-soap php7.0-zip
+sudo apt install curl php7.0 php7.0-curl php7.0-mbstring php7.0-xml php7.0-bcmath php7.0-gd php7.0-intl php7.0-mbstring php7.0-mcrypt php7.0-opcache php7.0-readline php7.0-soap php7.0-zip php7.0-mysql
 sudo apt-get install mariadb-client
 
 # Install composer
@@ -40,7 +40,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 # Install drush
 composer global require drush/drush
-sudo ln -sfn ~/.composer/vendor/bin/drush /usr/local/bin/drush
+sudo ln -sfn ~/.config/composer/vendor/bin/drush /usr/local/bin/drush
 
 # Need to reboot the VM because of adding the user to the docker group.
 exit
