@@ -1,4 +1,4 @@
-#How to test the cms-builder on linux
+# How to test the cms-builder on linux
 
 In a directory somewhere on a host OS create a VM using vagrant.
 ```bash
