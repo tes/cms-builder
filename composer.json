@@ -19,7 +19,7 @@
     "require": {
         "mglaman/toolstack-helper": "dev-fix-drupal-detection",
         "mglaman/platform-docker": "dev-tes",
-        "mglaman/docker-helper": "dev-exec",
+        "mglaman/docker-helper": "dev-tes",
         "symfony/console": "^2.7",
         "symfony/filesystem": "^3.0",
         "symfony/process": "^3.0",
