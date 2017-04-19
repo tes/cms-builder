@@ -57,5 +57,5 @@ Ubuntu has started again and you are ready to do your first build
 # Copy the files. Permissions and the vagrant share are not fun.
 cp -R /vagrant/cms-vision ./
 cd cms-vision
-/vagrant/cms-builder/cms-builder -vvv build
+/vagrant/cms-builder/cms-builder.phar -vvv build
 ```
