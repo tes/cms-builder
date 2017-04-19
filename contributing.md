@@ -6,7 +6,7 @@ To make changes to the docker containers you will need to contribute to the plat
 
 Additionally, platform-docker depends on mglaman/docker-helper and mglamam/toolstack-helper both of these are forked in the same way and are in [https://github.com/alexpott](https://github.com/alexpott)
 
-##How to make changes to this project
+## How to make changes to this project
 1. Clone https://github.com/tes/cms-builder
 1. If changing cms-builder follow the usual TES PR workflow
 
