@@ -14,8 +14,7 @@ Ubuntu has started and you are logged in.
 ```bash
 # Install PHP and maria client
 sudo apt-get update
-sudo apt install curl php7.0 php7.0-curl php7.0-mbstring php7.0-xml php7.0-bcmath php7.0-gd php7.0-intl php7.0-mbstring php7.0-mcrypt php7.0-opcache php7.0-readline php7.0-soap php7.0-zip php7.0-mysql
-sudo apt-get install mariadb-client
+sudo apt install curl php7.0 php7.0-curl php7.0-mbstring php7.0-xml php7.0-bcmath php7.0-gd php7.0-intl php7.0-mbstring php7.0-mcrypt php7.0-opcache php7.0-readline php7.0-soap php7.0-zip php7.0-mysql mariadb-client
 
 # Install composer
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
