@@ -19,6 +19,7 @@ use Symfony\Component\Console\Helper\ProcessHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use tes\CmsBuilder\Command\ConfigFiles;
 use tes\CmsBuilder\Command\SelfUpdateCommand;
 
 /**
@@ -49,6 +50,7 @@ class Application extends ParentApplication
         $commands[] = new Command\Database\LoadCommand();
         $commands[] = new Command\BuildCommand();
         $commands[] = new Command\PostBuildCommand();
+        $commands[] = new ConfigFiles();
         $commands[] = new Command\Platform\BuildCommand();
         $commands[] = new Command\PlatformDocker\InitCommand();
         $commands[] = new LinkCommand();
