@@ -51,7 +51,7 @@ class ConfigFiles extends Command {
           }
           $file_content = file_get_contents($source);
           $new_file_content = str_replace(array_keys($placeholders), array_values($placeholders), $file_content);
-          file_put_contents(Platform::rootDir() . '/' . x$destination, $new_file_content);
+          file_put_contents(Platform::rootDir() . '/' . $destination, $new_file_content);
       }
   }
 
