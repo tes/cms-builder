@@ -5,6 +5,7 @@ namespace tes\CmsBuilder\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * Builds a Tes site.
@@ -29,6 +30,8 @@ class BuildCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $stopwatch = new Stopwatch();
+        $stopwatch->start('build');
         /** @var \Symfony\Component\Console\Command\Command[] $commands */
         $commands = [];
         $commands[] = $this->getApplication()->find('platform:build');
@@ -44,6 +47,12 @@ class BuildCommand extends Command
                 return $return;
             }
         }
+        $event = $stopwatch->stop('build');
+        $output->writeln(sprintf(
+            '<info>Build completed in %s seconds using %s MB</info>',
+            number_format($event->getDuration()/1000, 2),
+            number_format($event->getMemory() / 1048576, 2)
+        ));
         return 0;
     }
 
