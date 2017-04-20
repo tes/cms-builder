@@ -19,7 +19,7 @@ class ConfigFiles extends Command {
   {
       $this
           ->setName('config-files')
-          ->setDescription('Rebuild configuration files from the docker configuration');
+          ->setDescription('Rebuild configuration files replacing docker variables');
   }
 
   /**
