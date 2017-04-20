@@ -44,9 +44,14 @@ class ConfigFiles extends Command {
               '{{ mysql_password }}' => Mysql::getMysqlPassword(),
               '{{ project_root }}' => Platform::rootDir(),
           ];
+          $source = Platform::rootDir() . '/' . $source;
+          if (!is_file($source)) {
+              $output->writeln("<error>Unable to read configuration file: $source</error>");
+              continue;
+          }
           $file_content = file_get_contents($source);
           $new_file_content = str_replace(array_keys($placeholders), array_values($placeholders), $file_content);
-          file_put_contents($destination, $new_file_content);
+          file_put_contents(Platform::rootDir() . '/' . x$destination, $new_file_content);
       }
   }
 
