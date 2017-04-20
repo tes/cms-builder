@@ -33,6 +33,7 @@ class BuildCommand extends Command
         $commands = [];
         $commands[] = $this->getApplication()->find('platform:build');
         $commands[] = $this->getApplication()->find('platform-docker:init');
+        $commands[] = $this->getApplication()->find('docker:config-files');
         $commands[] = $this->getApplication()->find('database:get');
         $commands[] = $this->getApplication()->find('database:load');
         $commands[] = $this->getApplication()->find('post-build');

@@ -4,6 +4,7 @@ namespace tes\CmsBuilder;
 
 use mglaman\Docker\Compose;
 use mglaman\Docker\Docker;
+use mglaman\PlatformDocker\Command\Docker\Configfiles;
 use mglaman\PlatformDocker\Command\Docker\RebuildCommand;
 use mglaman\PlatformDocker\Command\Docker\StopCommand;
 use mglaman\PlatformDocker\Command\Docker\UpCommand;
@@ -49,6 +50,7 @@ class Application extends ParentApplication
         $commands[] = new Command\Database\LoadCommand();
         $commands[] = new Command\BuildCommand();
         $commands[] = new Command\PostBuildCommand();
+        $commands[] = new ConfigFiles();
         $commands[] = new Command\Platform\BuildCommand();
         $commands[] = new Command\PlatformDocker\InitCommand();
         $commands[] = new LinkCommand();
