@@ -18,8 +18,7 @@ class ConfigFiles extends Command {
   protected function configure()
   {
       $this
-          ->setName('docker:config-files')
-          ->setAliases(['config-files'])
+          ->setName('config-files')
           ->setDescription('Rebuild configuration files from the docker configuration');
   }
 
