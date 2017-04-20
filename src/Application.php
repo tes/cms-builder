@@ -4,7 +4,6 @@ namespace tes\CmsBuilder;
 
 use mglaman\Docker\Compose;
 use mglaman\Docker\Docker;
-use mglaman\PlatformDocker\Command\Docker\Configfiles;
 use mglaman\PlatformDocker\Command\Docker\RebuildCommand;
 use mglaman\PlatformDocker\Command\Docker\StopCommand;
 use mglaman\PlatformDocker\Command\Docker\UpCommand;
@@ -20,6 +19,7 @@ use Symfony\Component\Console\Helper\ProcessHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use tes\CmsBuilder\Command\ConfigFiles;
 use tes\CmsBuilder\Command\SelfUpdateCommand;
 
 /**
