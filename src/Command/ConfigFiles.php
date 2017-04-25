@@ -39,7 +39,7 @@ class ConfigFiles extends Command {
               '{{ mariadb_container }}' => Compose::getContainerName(Platform::projectName(), 'mariadb'),
               '{{ redis_container }}' => Compose::getContainerName(Platform::projectName(), 'redis'),
               '{{ solr_container }}' => Compose::getContainerName(Platform::projectName(), 'solr'),
-              '{{ external_project_domain }}' => 'http://localhost/' . trim(shell_exec($detect_port_command)),
+              '{{ external_project_domain }}' => 'http://localhost:' . trim(shell_exec($detect_port_command)),
               '{{ mysql_user }}' => Mysql::getMysqlUser(),
               '{{ mysql_password }}' => Mysql::getMysqlPassword(),
               '{{ project_root }}' => Platform::rootDir(),
