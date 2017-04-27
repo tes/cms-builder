@@ -65,7 +65,7 @@ class BuildCommand extends Command
         // Ensure the site is actually ready to use.
         $container_name = Compose::getContainerName(Platform::projectName(), 'phpfpm');
         $check = TRUE;
-        $output->writeln('Copying files to containers. <comment>This will take sometime</comment>');
+        $output->writeln('Copying files to containers. <comment>This might take sometime.</comment>');
         $times = 0;
         $stopwatch->start('check');
         while ($check) {
