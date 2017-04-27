@@ -5,6 +5,8 @@ namespace tes\CmsBuilder\Command;
 use mglaman\Docker\Compose;
 use mglaman\Docker\Docker;
 use mglaman\PlatformDocker\Platform;
+use mglaman\PlatformDocker\Stacks\StacksFactory;
+use mglaman\Toolstack\Toolstack;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -41,6 +43,13 @@ class PostBuildCommand extends Command
         if (!Application::databaseServerAvailable($output)) {
             $output->writeln("<error>Database server not available</error>");
             return 1;
+        }
+
+        // Rebuild all the configuration files so we can swap out the install profile if necessary.
+        $stack = Toolstack::inspect(Platform::webDir());
+        if ($stack) {
+            $output->writeln("<comment>Configuring stack:</comment> " . $stack->type());
+            StacksFactory::configure($stack->type());
         }
 
         // Run the config-file command.
