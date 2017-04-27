@@ -2,6 +2,9 @@
 
 namespace tes\CmsBuilder\Command;
 
+use mglaman\Docker\Compose;
+use mglaman\Docker\Docker;
+use mglaman\PlatformDocker\Platform;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -58,6 +61,29 @@ class BuildCommand extends Command
             number_format($event->getDuration()/1000, 2),
             number_format($event->getMemory() / 1048576, 2)
         ));
+
+        // Ensure the site is actually ready to use.
+        $container_name = Compose::getContainerName(Platform::projectName(), 'phpfpm');
+        $check = TRUE;
+        $output->writeln('Copying files to containers. <comment>This will take sometime</comment>');
+        $times = 0;
+        $stopwatch->start('check');
+        while ($check) {
+            try {
+              Docker::sh($container_name, 'ls /var/www/html/web/index.php');
+              $check = FALSE;
+            }
+            catch (\Exception $e) {
+                sleep(10);
+                $times++;
+            }
+            if ($times > 12) {
+                $output->writeln('<error>Waited for 2 minutes and files still not available</error>');
+                $check = FALSE;
+            }
+        }
+        $event = $stopwatch->stop('check');
+        $output->writeln(sprintf('<info>File sync completed in %s seconds</info>', number_format($event->getDuration()/1000, 2)));
         return 0;
     }
 
