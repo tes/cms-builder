@@ -164,7 +164,7 @@ class Application extends ParentApplication
         $port = $matches[0];
 
         // Ensure that we can connect to the database before loading the data.
-        $dsn = "mysql:dbname=data;host=127.0.0.1:$port;";
+        $dsn = "mysql:dbname=data;host=127.0.0.1;port=$port;";
         $retry = 0;
         while (TRUE) {
             if ($output->getVerbosity() >= $output::VERBOSITY_VERBOSE) {
@@ -175,6 +175,9 @@ class Application extends ParentApplication
                 break;
             }
             catch (\Exception $e) {
+                if ($output->getVerbosity() >= $output::VERBOSITY_VERBOSE) {
+                    $output->writeln('<error>' . $e->getMessage() . '</error>');
+                }
             }
             sleep(10);
             $retry++;
