@@ -19,7 +19,8 @@ You may download a ready-to-use version as a Phar:
 $ curl -LSs https://github.com/tes/cms-builder/raw/master/cms-builder.phar -o cms-builder
 ```
 
-The command will download it to the current directory. From there, you may place it anywhere that will make it easier for you to access (such as `/usr/local/bin`) and chmod it to `755`.
+The command will download it to the current directory. From there, you may place it anywhere that will make it easier
+for you to access (such as `/usr/local/bin`) and chmod it to `755`.
 
 ### Update
 You can run the self-update command.
@@ -67,4 +68,13 @@ post_build:
     - 'en stage_file_proxy devel -y'
 ```
 
-Profit!!!
+## Troubleshooting
+### Files keep reappearing even though you've deleted them?
+The cms-builder uses unison to sync files to the container. This is a performance tweak for OSX. Sometimes the volume
+can get out-of-sync and contain files you don't want anymore. Running the following command with cause the volume to be
+rebuilt:
+```bash
+cms-builder build --rebuild-volumes
+```
+### Don't run the command with sudo
+Just don't.
