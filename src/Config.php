@@ -45,7 +45,7 @@ class Config
      */
     public static function findSites() {
         $sites = [];
-        $files = new \DirectoryIterator(Platform::rootDir());
+        $files = new \DirectoryIterator(static::rootDir());
         $files = new \RegexIterator($files, '/^\.cms-builder\.[^\.]*\.yml$/');
         foreach ($files as $file) {
             preg_match('/^\.cms-builder\.([^\.]*)\.yml$/', $file->getFileName(), $matches);
@@ -54,9 +54,17 @@ class Config
         return $sites;
     }
 
+    /**
+     * Gets the root dir from Platform config or just uses the current directory.
+     * @return string
+     */
+    protected static function rootDir() {
+        return Platform::rootDir() ?: getcwd();
+    }
+
     protected function getConfigFilePath()
     {
-        $root = Platform::rootDir();
+        $root = static::rootDir();
 
         $file = '.cms-builder.yml';
         if (static::$site) {
@@ -118,7 +126,7 @@ class Config
     public function writeConfig($destinationDir = null)
     {
         if (!$destinationDir) {
-            $destinationDir = Platform::rootDir();
+            $destinationDir = static::rootDir();
         }
         file_put_contents($destinationDir . '/' . $this->getConfigFilePath(), Yaml::dump($this->config, 2));
         return $this;
