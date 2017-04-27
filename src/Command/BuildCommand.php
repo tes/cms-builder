@@ -6,6 +6,7 @@ use mglaman\Docker\Compose;
 use mglaman\Docker\Docker;
 use mglaman\PlatformDocker\Platform;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -49,7 +50,13 @@ class BuildCommand extends Command
         $commands[] = $this->getApplication()->find('post-build');
 
         foreach ($commands as $command) {
-            $return = $command->run($input, $output);
+            if (!$command->getDefinition()->hasArgument('site')) {
+                $command_input = new ArrayInput([], $command->getDefinition());
+            }
+            else {
+                $command_input = clone $input;
+            }
+            $return = $command->run($command_input, $output);
             if ($return !== 0) {
                 $output->writeln('<error>Command '. $command->getName() . ' failed</error>');
                 return $return;
