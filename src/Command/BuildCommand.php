@@ -9,6 +9,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
@@ -28,6 +29,7 @@ class BuildCommand extends Command
         $this
             ->setName('build')
             ->addArgument('site', InputArgument::OPTIONAL, 'Builds a specific site if there repository has multiple')
+            ->addOption('rebuild-volumes', 'r', InputOption::VALUE_NONE, 'Forces a rebuild of the code volume')
             ->setDescription('Builds a working site from a clone of a CMS repo from TES github.');
     }
 
@@ -44,18 +46,20 @@ class BuildCommand extends Command
         // Build the code base.
         $commands[] = $this->getApplication()->find('platform:build');
         // Build the docker containers.
-        $commands[] = $this->getApplication()->find('platform-docker:init');
+        $commands[] = $this->getApplication()->find('docker:rebuild');
         $commands[] = $this->getApplication()->find('database:get');
         $commands[] = $this->getApplication()->find('database:load');
         $commands[] = $this->getApplication()->find('post-build');
 
         foreach ($commands as $command) {
-            if (!$command->getDefinition()->hasArgument('site')) {
-                $command_input = new ArrayInput([], $command->getDefinition());
+            $input_array = [];
+            if ($command->getDefinition()->hasArgument('site')) {
+                $input_array['site'] = $input->getArgument('site');
             }
-            else {
-                $command_input = clone $input;
+            if ($command->getDefinition()->hasOption('volumes') && $input->getOption('rebuild-volumes')) {
+                $input_array['--volumes'] = 1;
             }
+            $command_input = new ArrayInput($input_array, $command->getDefinition());
             $return = $command->run($command_input, $output);
             if ($return !== 0) {
                 $output->writeln('<error>Command '. $command->getName() . ' failed</error>');
