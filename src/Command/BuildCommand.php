@@ -4,6 +4,7 @@ namespace tes\CmsBuilder\Command;
 
 use mglaman\Docker\Compose;
 use mglaman\Docker\Docker;
+use mglaman\PlatformDocker\Config as PlatformDockerConfig;
 use mglaman\PlatformDocker\Platform;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -46,7 +47,12 @@ class BuildCommand extends Command
         // Build the code base.
         $commands[] = $this->getApplication()->find('platform:build');
         // Build the docker containers.
-        $commands[] = $this->getApplication()->find('docker:rebuild');
+        if (empty(PlatformDockerConfig::get())) {
+            $commands[] = $this->getApplication()->find('platform-docker:init');
+        }
+        else {
+            $commands[] = $this->getApplication()->find('docker:rebuild');
+        }
         $commands[] = $this->getApplication()->find('database:get');
         $commands[] = $this->getApplication()->find('database:load');
         $commands[] = $this->getApplication()->find('post-build');
