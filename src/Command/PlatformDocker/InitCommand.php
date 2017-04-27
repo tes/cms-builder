@@ -21,6 +21,8 @@ class InitCommand extends PDInitCommand
     {
         $this
             ->setName('platform-docker:init')
+            // Need to alias this to init to ensure it can run if required.
+            ->setAliases(['init'])
             ->setDescription('Sets up Platform and Docker Compose files');
     }
 
