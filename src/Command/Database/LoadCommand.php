@@ -4,6 +4,7 @@ namespace tes\CmsBuilder\Command\Database;
 
 use mglaman\PlatformDocker\Platform;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
@@ -23,8 +24,9 @@ class LoadCommand extends Command
     protected function configure()
     {
         $this
-          ->setName('database:load')
-          ->setDescription('Loads a database backup');
+            ->setName('database:load')
+            ->addArgument('site', InputArgument::OPTIONAL, 'Builds a specific site if there repository has multiple')
+            ->setDescription('Loads a database backup');
     }
 
     /**
@@ -32,6 +34,7 @@ class LoadCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->getApplication()->chooseSite($input, $output);
         if (empty(Config::get('database'))) {
             $output->writeln('<info>No database to load as \'database\' key not set in .cms-builder.yml</info>');
             return;

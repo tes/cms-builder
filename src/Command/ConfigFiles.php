@@ -6,6 +6,7 @@ use mglaman\Docker\Compose;
 use mglaman\PlatformDocker\Mysql\Mysql;
 use mglaman\PlatformDocker\Platform;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use tes\CmsBuilder\Config;
@@ -19,6 +20,7 @@ class ConfigFiles extends Command {
   {
       $this
           ->setName('config-files')
+          ->addArgument('site', InputArgument::OPTIONAL, 'Builds a specific site if there repository has multiple')
           ->setDescription('Rebuild configuration files replacing docker variables');
   }
 
@@ -27,6 +29,7 @@ class ConfigFiles extends Command {
    */
   protected function execute(InputInterface $input, OutputInterface $output)
   {
+      $this->getApplication()->chooseSite($input, $output);
       // Run post build commands.
       $config_files = Config::get('config_files') ?: [];
 
@@ -42,6 +45,7 @@ class ConfigFiles extends Command {
               '{{ mysql_user }}' => Mysql::getMysqlUser(),
               '{{ mysql_password }}' => Mysql::getMysqlPassword(),
               '{{ project_root }}' => Platform::rootDir(),
+              '{{ install_profile }}' => Config::getSite(),
           ];
           $source = Platform::rootDir() . '/' . $source;
           if (!is_file($source)) {

@@ -6,6 +6,7 @@ use mglaman\Docker\Compose;
 use mglaman\Docker\Docker;
 use mglaman\PlatformDocker\Platform;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
@@ -26,8 +27,9 @@ class PostBuildCommand extends Command
     protected function configure()
     {
         $this
-          ->setName('post-build')
-          ->setDescription('Runs the post-build commands based on the content of a project\'s .cms-builder.yml.');
+            ->setName('post-build')
+            ->addArgument('site', InputArgument::OPTIONAL, 'Builds a specific site if there repository has multiple')
+            ->setDescription('Runs the post-build commands based on the content of a project\'s .cms-builder.yml.');
     }
 
     /**
@@ -35,6 +37,7 @@ class PostBuildCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->getApplication()->chooseSite($input, $output);
         if (!Application::databaseServerAvailable($output)) {
             $output->writeln("<error>Database server not available</error>");
             return 1;

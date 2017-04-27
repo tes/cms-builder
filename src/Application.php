@@ -17,7 +17,9 @@ use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\ProcessHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Filesystem\Filesystem;
 use tes\CmsBuilder\Command\ConfigFiles;
 use tes\CmsBuilder\Command\SelfUpdateCommand;
@@ -181,6 +183,30 @@ class Application extends ParentApplication
             }
         }
         return TRUE;
+    }
+
+    /**
+     * Prompt the user to choose a site if necessary.
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    public function chooseSite(InputInterface $input, OutputInterface $output) {
+        // What sites are available to build?
+        $sites = Config::findSites();
+        if (!empty($sites)) {
+            $site = $input->getArgument('site') ?: Config::getSite();
+            if (!in_array($site, $sites, TRUE) && count($sites) > 1) {
+                $helper = new QuestionHelper();
+                $question = new ChoiceQuestion('Which site do you want to build?', $sites);
+                $site = $helper->ask($input, $output, $question);
+            }
+            else {
+                // There's only one site use that one.
+                $site = Config::getSite() ?: reset($sites);
+            }
+            Config::setSite($site);
+        }
     }
 
 }

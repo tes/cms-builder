@@ -3,6 +3,7 @@
 namespace tes\CmsBuilder\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -21,8 +22,9 @@ class BuildCommand extends Command
     protected function configure()
     {
         $this
-          ->setName('build')
-          ->setDescription('Builds a working site from a clone of a CMS repo from TES github.');
+            ->setName('build')
+            ->addArgument('site', InputArgument::OPTIONAL, 'Builds a specific site if there repository has multiple')
+            ->setDescription('Builds a working site from a clone of a CMS repo from TES github.');
     }
 
     /**
@@ -30,6 +32,7 @@ class BuildCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->getApplication()->chooseSite($input, $output);
         $stopwatch = new Stopwatch();
         $stopwatch->start('build');
         /** @var \Symfony\Component\Console\Command\Command[] $commands */

@@ -11,11 +11,62 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Config
 {
+    /**
+     * If there a multiple .cms-builder.*.yml the choose site.
+     *
+     * @see \tes\CmsBuilder\Application::chooseSite()
+     *
+     * @var string
+     */
+    protected static $site;
+
     use YamlConfigReader;
+
+    /**
+     * Sets a site to build.
+     *
+     * @param $site
+     */
+    public static function setSite($site) {
+        static::$site = $site;
+    }
+
+    /**
+     * Gets the site being built.
+     */
+    public static function getSite() {
+        return static::$site;
+    }
+
+    /**
+     * Fimnds sites based on .cms-builder.*.yml files.
+     *
+     * @return array
+     */
+    public static function findSites() {
+        $sites = [];
+        $files = new \DirectoryIterator(Platform::rootDir());
+        $files = new \RegexIterator($files, '/^\.cms-builder\.[^\.]*\.yml$/');
+        foreach ($files as $file) {
+            preg_match('/^\.cms-builder\.([^\.]*)\.yml$/', $file->getFileName(), $matches);
+            $sites[] =  $matches[1];
+        }
+        return $sites;
+    }
 
     protected function getConfigFilePath()
     {
-        return '.cms-builder.yml';
+        $root = Platform::rootDir();
+
+        $file = '.cms-builder.yml';
+        if (static::$site) {
+            $file = '.cms-builder.' . static::$site . '.yml';
+        }
+        if (!file_exists($root . '/' . $file)) {
+            throw new \RuntimeException("$root/$file does not exist");
+        }
+
+        return $file;
     }
 
     /**
