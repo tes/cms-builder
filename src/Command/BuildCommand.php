@@ -37,9 +37,10 @@ class BuildCommand extends Command
         $stopwatch->start('build');
         /** @var \Symfony\Component\Console\Command\Command[] $commands */
         $commands = [];
+        // Build the code base.
         $commands[] = $this->getApplication()->find('platform:build');
+        // Build the docker containers.
         $commands[] = $this->getApplication()->find('platform-docker:init');
-        $commands[] = $this->getApplication()->find('config-files');
         $commands[] = $this->getApplication()->find('database:get');
         $commands[] = $this->getApplication()->find('database:load');
         $commands[] = $this->getApplication()->find('post-build');

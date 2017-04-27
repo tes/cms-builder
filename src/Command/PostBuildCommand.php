@@ -42,6 +42,17 @@ class PostBuildCommand extends Command
             $output->writeln("<error>Database server not available</error>");
             return 1;
         }
+
+        // Run the config-file command.
+        $commands[] = $this->getApplication()->find('config-files');
+        foreach ($commands as $command) {
+            $return = $command->run($input, $output);
+            if ($return !== 0) {
+                $output->writeln('<error>Command '. $command->getName() . ' failed</error>');
+                return $return;
+            }
+        }
+
         // Run post build commands.
         $post_build_cmds = Config::get('post_build') ?: [];
         $post_build_cmds = $post_build_cmds + ['bash' => [], 'docker' => [], 'drush' => []];
