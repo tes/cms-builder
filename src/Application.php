@@ -205,8 +205,8 @@ class Application extends ParentApplication
                 $site = $helper->ask($input, $output, $question);
             }
             else {
-                // There's only one site use that one.
-                $site = Config::getSite() ?: reset($sites);
+                // Either we've supplied a correct argument or There's only one site use that one.
+                $site = $input->getArgument('site') ?: reset($sites);
             }
             Config::setSite($site);
         }
