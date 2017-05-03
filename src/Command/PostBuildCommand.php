@@ -4,6 +4,7 @@ namespace tes\CmsBuilder\Command;
 
 use mglaman\Docker\Compose;
 use mglaman\Docker\Docker;
+use mglaman\PlatformDocker\DrushDiscovery;
 use mglaman\PlatformDocker\Platform;
 use mglaman\PlatformDocker\Stacks\StacksFactory;
 use mglaman\Toolstack\Toolstack;
@@ -91,8 +92,9 @@ class PostBuildCommand extends Command
             Docker::stop([$container_name]);
             Docker::start([$container_name]);
         }
+        $drush = DrushDiscovery::getExecutable();
         foreach ($post_build_cmds['drush'] as $command) {
-            $process = new Process("drush $command", Platform::webDir(), null, null, null);
+            $process = new Process("$drush $command", Platform::webDir(), null, null, null);
             if ($output->getVerbosity() >= $output::VERBOSITY_VERBOSE) {
                 $output->writeln($process->getCommandLine());
             }
