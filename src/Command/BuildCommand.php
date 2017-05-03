@@ -2,6 +2,7 @@
 
 namespace tes\CmsBuilder\Command;
 
+use GuzzleHttp\Client;
 use mglaman\Docker\Compose;
 use mglaman\Docker\Docker;
 use mglaman\PlatformDocker\Config as PlatformDockerConfig;
@@ -80,27 +81,29 @@ class BuildCommand extends Command
         ));
 
         // Ensure the site is actually ready to use.
-        $container_name = Compose::getContainerName(Platform::projectName(), 'phpfpm');
         $check = TRUE;
-        $output->writeln('Copying files to containers. <comment>This might take sometime.</comment>');
+        $output->writeln('<comment>Ensuring the site is ready by getting front page.</comment>');
         $times = 0;
         $stopwatch->start('check');
+        $client = new Client();
+        $url = Platform::getUri();
         while ($check) {
-            try {
-              Docker::sh($container_name, 'ls /var/www/html/web/index.php');
-              $check = FALSE;
-            }
-            catch (\Exception $e) {
-                sleep(10);
-                $times++;
-            }
-            if ($times > 12) {
-                $output->writeln('<error>Waited for 2 minutes and files still not available</error>');
+            $res = $client->request('GET', $url);
+            if ($res->getStatusCode() == "200") {
                 $check = FALSE;
+            }
+            else {
+                $times++;
+                if ($times > 12) {
+                    $output->writeln('<error>Waited for 2 minutes and site still not available</error>');
+                    $check = FALSE;
+                }
             }
         }
         $event = $stopwatch->stop('check');
-        $output->writeln(sprintf('<info>File sync completed in %s seconds</info>', number_format($event->getDuration()/1000, 2)));
+        if ($output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
+          $output->writeln(sprintf('<info>Site check completed in %s seconds</info>', number_format($event->getDuration()/1000, 2)));
+        }
         return 0;
     }
 
