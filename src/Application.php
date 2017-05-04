@@ -195,10 +195,14 @@ class Application extends ParentApplication
      * @param OutputInterface $output
      */
     public function chooseSite(InputInterface $input, OutputInterface $output) {
+        // If it is already set just return.
+        if (Config::getSite()) {
+            return;
+        }
         // What sites are available to build?
         $sites = Config::findSites();
         if (!empty($sites)) {
-            $site = $input->getArgument('site') ?: Config::getSite();
+            $site = $input->getArgument('site');
             if (!in_array($site, $sites, TRUE) && count($sites) > 1) {
                 $helper = new QuestionHelper();
                 $question = new ChoiceQuestion('Which site do you want to build?', $sites);
