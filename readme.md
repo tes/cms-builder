@@ -9,6 +9,7 @@
 * [Docker](https://www.docker.com/)
 * [Platform CLI](https://docs.platform.sh/overview/cli.html)
 * [Drush](http://docs.drush.org/en/master/install/)
+* Docker Compose
 
 Note that after installing Docker you have to start the application to complete the command line install
 
@@ -69,6 +70,8 @@ post_build:
 ```
 
 ## Troubleshooting
+### Permission denied when connecting to socket?
+sudo usermod -a -G docker $USER
 ### Files keep reappearing even though you've deleted them?
 The cms-builder uses unison to sync files to the container. This is a performance tweak for OSX. Sometimes the volume
 can get out-of-sync and contain files you don't want anymore. Running the following command with cause the volume to be
