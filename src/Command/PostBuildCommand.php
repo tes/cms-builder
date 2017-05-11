@@ -12,6 +12,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use tes\CmsBuilder\Application;
 use tes\CmsBuilder\Config;
@@ -101,6 +102,11 @@ class PostBuildCommand extends Command
             $process->start($function);
             $process->wait();
         }
+        // Ensure that we can modify settings.php. After site-installs Drupal will chmod the directory that makes
+        // managing settings.php in git hard. As cms-builder is only intended for dev builds and protected environments
+        // this should be ok.
+        $fs = new Filesystem();
+        $fs->chmod(Platform::webDir() . '/sites/default', 0775);
     }
 
 
