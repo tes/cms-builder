@@ -34,6 +34,8 @@ class BuildCommand extends Command
         $builder = ProcessBuilder::create([
             'platform',
             'build',
+            // Ensure that composer build runs every time.
+            '--no-archive',
             '--source=.',
             '--destination=_www'
         ]);
