@@ -21,6 +21,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Filesystem\Filesystem;
+use tes\CmsBuilder\Command\CheckRequirementsCommand;
 use tes\CmsBuilder\Command\ConfigFiles;
 use tes\CmsBuilder\Command\SelfUpdateCommand;
 
@@ -58,6 +59,7 @@ class Application extends ParentApplication
         $commands[] = new LinkCommand();
         $commands[] = new DrushCommand();
         $commands[] = new SelfUpdateCommand();
+        $commands[] = new CheckRequirementsCommand();
         // Add Platform Docker commands
         $commands[] = new Command\CommandWrapper(new UpCommand());
         $commands[] = new Command\CommandWrapper(new StopCommand());

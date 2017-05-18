@@ -6,6 +6,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\ProcessBuilder;
+use tes\CmsBuilder\Command\CheckRequirementsCommand;
 
 /**
  * Runs the platform build command.
@@ -29,6 +30,7 @@ class BuildCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        CheckRequirementsCommand::checkPlatformShCli($output);
         // @todo validate that platform.sh's CLI tool is installed.
         // @todo how to provide feedback whilst the process is on going?
         $builder = ProcessBuilder::create([
@@ -49,13 +51,7 @@ class BuildCommand extends Command
         $function  = function ($type, $buffer) use ($output, $process) {
             $output->write($buffer);
         };
-        $run_again = clone $process;
         $process->start($function);
         $process->wait();
-
-        // Unfortunately platform build does not always get the symlinks correct the first time.
-        // @see https://github.com/platformsh/platformsh-cli/issues/578
-        $run_again->start($function);
-        $run_again->wait();
     }
 }
