@@ -33,12 +33,8 @@ class SelfUpdateCommand extends Command
         $updater = new Updater(null, false);
         $updater->setStrategyObject($strategy);
         $updater->getStrategy()->setPharUrl('https://github.com/tes/cms-builder/raw/master/cms-builder.phar');
-        try {
-            $result = $updater->update();
-            $result ? exit('Updated!') : exit('No update needed!');
-        } catch (\Exception $e) {
-            exit('Well, something happened! Either an oopsie or something involving hackers.');
-        }
+        $result = $updater->update();
+        $output->writeln($result ? 'Updated!' : 'No update needed!');
     }
 
 }
