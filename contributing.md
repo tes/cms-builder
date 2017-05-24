@@ -25,6 +25,16 @@ Once the changes have been merged into [https://github.com/tes/cms-builder](http
 Pre-requisite: Install and configure [Box2](https://github.com/box-project/box2)
 
 1. Remove composer.lock
-1. Run composer install --no-dev
-1. Run box build
+1. Run `composer install --no-dev`
+1. Run `box build`
+   
+   You may get the following error:
+   ```
+   [UnexpectedValueException]                                                                                              
+   creating archive "/path/to/cms-builder/cms-builder.phar" disabled by the php.ini setting phar.readonly  
+   ```
+   In this case you can either modify your PHP CLI settings to disable `phar.readonly` or do it from the command line:
+   ```bash
+   php -d "phar.readonly=false" $(which box) build
+   ```
 1. Commit and push changes to master
