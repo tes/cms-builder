@@ -9,6 +9,7 @@ use mglaman\PlatformDocker\Command\Docker\StopCommand;
 use mglaman\PlatformDocker\Command\Docker\UpCommand;
 use mglaman\PlatformDocker\Command\DrushCommand;
 use mglaman\PlatformDocker\Command\LinkCommand;
+use mglaman\PlatformDocker\Command\MailCommand;
 use mglaman\PlatformDocker\Platform;
 use mglaman\PlatformDocker\Mysql\Mysql;
 use Symfony\Component\Console\Application as ParentApplication;
@@ -57,6 +58,7 @@ class Application extends ParentApplication
         $commands[] = new Command\Platform\BuildCommand();
         $commands[] = new Command\PlatformDocker\InitCommand();
         $commands[] = new LinkCommand();
+        $commands[] = new MailCommand();
         $commands[] = new DrushCommand();
         $commands[] = new SelfUpdateCommand();
         $commands[] = new CheckRequirementsCommand();

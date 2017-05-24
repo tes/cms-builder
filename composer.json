@@ -5,7 +5,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/alexpott/platform-docker"
+            "url": "https://github.com/tes/platform-docker"
         },
         {
             "type": "vcs",
