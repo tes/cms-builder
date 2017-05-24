@@ -30,8 +30,8 @@ Pre-requisite: Install and configure [Box2](https://github.com/box-project/box2)
    
    You may get the following error:
    ```
-   [UnexpectedValueException]                                                                                              
-   creating archive "/path/to/cms-builder/cms-builder.phar" disabled by the php.ini setting phar.readonly  
+   [UnexpectedValueException]
+   creating archive "/path/to/cms-builder/cms-builder.phar" disabled by the php.ini setting phar.readonly
    ```
    In this case you can either modify your PHP CLI settings to disable `phar.readonly` or do it from the command line:
    ```bash
