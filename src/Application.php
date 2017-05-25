@@ -62,6 +62,7 @@ class Application extends ParentApplication
         $commands[] = new DrushCommand();
         $commands[] = new SelfUpdateCommand();
         $commands[] = new CheckRequirementsCommand();
+        $commands[] = new Command\PhpUnitTestCommand();
         // Add Platform Docker commands
         $commands[] = new Command\CommandWrapper(new UpCommand());
         $commands[] = new Command\CommandWrapper(new StopCommand());
