@@ -17,6 +17,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Removes aliases from commands provided by dependencies.
+ *
+ * It would be neater to implement an interface than extend the base class, but
+ * there isn't an interface sadly/strangely.
+ *
+ * @todo I think the fluent methods should return $this rather than the wrapped
+ *   command.
  */
 class CommandWrapper extends Command
 {
@@ -129,6 +135,7 @@ class CommandWrapper extends Command
 
     public function setName($name)
     {
+        // Does calling parent::setName() make any practical difference?
         parent::setName($name);
         return $this->command->setName($name);
     }
@@ -168,6 +175,10 @@ class CommandWrapper extends Command
         return $this->command->getProcessedHelp();
     }
 
+    /**
+     * @todo I think it would make sense for this to set the local aliases
+     *   rather than proxy the call to the wrapped command.
+     */
     public function setAliases($aliases)
     {
         return $this->command->setAliases($aliases);
