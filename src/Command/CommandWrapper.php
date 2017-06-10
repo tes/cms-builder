@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Removes aliases from commands provided by dependencies.
+ * Base class that wraps a Symfony command.
  *
  * It would be neater to implement an interface than extend the base class, but
  * there isn't an interface sadly/strangely.
@@ -31,16 +31,10 @@ class CommandWrapper extends Command
      */
     protected $command;
 
-    /**
-     * @var array
-     */
-    protected $aliases;
-    
-    public function __construct(Command $command, $aliases = [])
+    public function __construct(Command $command)
     {
         $this->command = $command;
         parent::__construct($command->getName());
-        $this->aliases = $aliases;
     }
 
     public function ignoreValidationErrors()
@@ -175,10 +169,6 @@ class CommandWrapper extends Command
         return $this->command->getProcessedHelp();
     }
 
-    /**
-     * @todo I think it would make sense for this to set the local aliases
-     *   rather than proxy the call to the wrapped command.
-     */
     public function setAliases($aliases)
     {
         return $this->command->setAliases($aliases);
@@ -186,7 +176,7 @@ class CommandWrapper extends Command
 
     public function getAliases()
     {
-        return $this->aliases;
+        return $this->command->getAliases();
     }
 
     public function getSynopsis($short = false)

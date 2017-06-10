@@ -64,9 +64,9 @@ class Application extends ParentApplication
         $commands[] = new CheckRequirementsCommand();
         $commands[] = new Command\PhpUnitTestCommand();
         // Add Platform Docker commands
-        $commands[] = new Command\CommandWrapper(new UpCommand());
-        $commands[] = new Command\CommandWrapper(new StopCommand());
-        $commands[] = new Command\CommandWrapper(new RebuildCommand());
+        $commands[] = new Command\UnaliasingWrapper(new UpCommand());
+        $commands[] = new Command\UnaliasingWrapper(new StopCommand());
+        $commands[] = new Command\UnaliasingWrapper(new RebuildCommand());
         return $commands;
     }
 

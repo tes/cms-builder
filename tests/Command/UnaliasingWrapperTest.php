@@ -4,9 +4,9 @@ namespace tes\CmsBuilder\Tests\Command;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
-use tes\CmsBuilder\Command\CommandWrapper;
+use tes\CmsBuilder\Command\UnaliasingWrapper;
 
-class CommandWrapperTest extends TestCase
+class UnaliasingWrapperTest extends TestCase
 {
 
     public function setUp() {
@@ -19,12 +19,12 @@ class CommandWrapperTest extends TestCase
     }
 
     public function testNoAliases() {
-        $command = new CommandWrapper($this->mockCommand);
+        $command = new UnaliasingWrapper($this->mockCommand);
         $this->assertEmpty($command->getAliases());
     }
 
     public function testTwoAliasesFromConstructor() {
-        $command = new CommandWrapper($this->mockCommand, ['new1', 'new2']);
+        $command = new UnaliasingWrapper($this->mockCommand, ['new1', 'new2']);
         $this->assertEquals(['new1', 'new2'], $command->getAliases());
     }
 
