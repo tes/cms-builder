@@ -20,9 +20,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * It would be neater to implement an interface than extend the base class, but
  * there isn't an interface sadly/strangely.
- *
- * @todo I think the fluent methods should return $this rather than the wrapped
- *   command.
  */
 class CommandWrapper extends Command
 {
@@ -33,8 +30,8 @@ class CommandWrapper extends Command
 
     public function __construct(Command $command)
     {
+        parent::__construct();
         $this->command = $command;
-        parent::__construct($command->getName());
     }
 
     public function ignoreValidationErrors()
@@ -69,7 +66,16 @@ class CommandWrapper extends Command
 
     protected function configure()
     {
-        $this->command->configure();
+        // It shouldn't matter what name we set on the wrapper,
+        parent::setName('command_wrapper');
+        // I suspect the only call to ::configure() will come from the
+        // constructor, in which case we need never proxy the call to the
+        // wrapped object. (The wrapper takes a constructed command which should
+        // already be configured.) However in an abundance of caution, all calls
+        // to ::configure() are proxied after the call from the constructor.
+        if (!empty($this->command)) {
+            $this->command->configure();
+        }
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -94,17 +100,19 @@ class CommandWrapper extends Command
 
     public function setCode($code)
     {
-        return $this->command->setCode($code);
+        $this->command->setCode($code);
+        return $this;
     }
 
     public function mergeApplicationDefinition($mergeArgs = true)
     {
-        return $this->command->mergeApplicationDefinition($mergeArgs);
+        $this->command->mergeApplicationDefinition($mergeArgs);
     }
 
     public function setDefinition($definition)
     {
-        return $this->command->setDefinition($definition);
+        $this->command->setDefinition($definition);
+        return $this;
     }
 
     public function getDefinition()
@@ -119,24 +127,27 @@ class CommandWrapper extends Command
 
     public function addArgument($name, $mode = null, $description = '', $default = null)
     {
-        return $this->command->addArgument($name, $mode, $description, $default);
+        $this->command->addArgument($name, $mode, $description, $default);
+        return $this;
     }
 
     public function addOption($name, $shortcut = null, $mode = null, $description = '', $default = null)
     {
-        return $this->command->addOption($name, $shortcut, $mode, $description, $default);
+        $this->command->addOption($name, $shortcut, $mode, $description, $default);
+        return $this;
     }
 
     public function setName($name)
     {
+        $this->command->setName($name);
         // Does calling parent::setName() make any practical difference?
-        parent::setName($name);
-        return $this->command->setName($name);
+        return parent::setName($name);
     }
 
     public function setProcessTitle($title)
     {
-        return $this->command->setProcessTitle($title);
+        $this->command->setProcessTitle($title);
+        return $this;
     }
 
     public function getName()
@@ -146,7 +157,8 @@ class CommandWrapper extends Command
 
     public function setDescription($description)
     {
-        return $this->command->setDescription($description);
+        $this->command->setDescription($description);
+        return $this;
     }
 
     public function getDescription()
@@ -156,7 +168,8 @@ class CommandWrapper extends Command
 
     public function setHelp($help)
     {
-        return $this->command->setHelp($help);
+        $this->command->setHelp($help);
+        return $this;
     }
 
     public function getHelp()
@@ -171,7 +184,8 @@ class CommandWrapper extends Command
 
     public function setAliases($aliases)
     {
-        return $this->command->setAliases($aliases);
+        $this->command->setAliases($aliases);
+        return $this;
     }
 
     public function getAliases()
@@ -186,7 +200,8 @@ class CommandWrapper extends Command
 
     public function addUsage($usage)
     {
-        return $this->command->addUsage($usage);
+        $this->command->addUsage($usage);
+        return $this;
     }
 
     public function getUsages()

@@ -31,12 +31,14 @@ use tes\CmsBuilder\Command\SelfUpdateCommand;
  */
 class Application extends ParentApplication
 {
+    const VERSION ='0.1.0';
+
     /**
      * {@inheritdoc}
      */
     public function __construct()
     {
-        parent::__construct('CMS Builder', '0.0.1');
+        parent::__construct('CMS Builder', self::VERSION);
         $this->setDefaultTimezone();
         $this->addCommands($this->getCommands());
     }
