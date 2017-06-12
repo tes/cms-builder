@@ -69,6 +69,12 @@ class Application extends ParentApplication
         $commands[] = new Command\UnaliasingWrapper(new UpCommand());
         $commands[] = new Command\UnaliasingWrapper(new StopCommand());
         $commands[] = new Command\UnaliasingWrapper(new RebuildCommand());
+
+        // Log the duration of all commands.
+        foreach ($commands as $key => $command) {
+            $commands[$key] = new Command\TimedWrapper($command);
+        }
+
         return $commands;
     }
 
