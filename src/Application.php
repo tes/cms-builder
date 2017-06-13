@@ -21,9 +21,12 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use tes\CmsBuilder\Command\CheckRequirementsCommand;
 use tes\CmsBuilder\Command\ConfigFiles;
+use tes\CmsBuilder\Command\EventListener\CommandTimer;
 use tes\CmsBuilder\Command\SelfUpdateCommand;
 
 /**
@@ -31,7 +34,7 @@ use tes\CmsBuilder\Command\SelfUpdateCommand;
  */
 class Application extends ParentApplication
 {
-    const VERSION ='0.1.0';
+    const VERSION = '0.1.0';
 
     /**
      * {@inheritdoc}
@@ -40,6 +43,7 @@ class Application extends ParentApplication
     {
         parent::__construct('CMS Builder', self::VERSION);
         $this->setDefaultTimezone();
+        $this->addListeners();
         $this->addCommands($this->getCommands());
     }
 
@@ -70,12 +74,41 @@ class Application extends ParentApplication
         $commands[] = new Command\UnaliasingWrapper(new StopCommand());
         $commands[] = new Command\UnaliasingWrapper(new RebuildCommand());
 
-        // Log the duration of all commands.
-        foreach ($commands as $key => $command) {
-            $commands[$key] = new Command\TimedWrapper($command);
-        }
-
         return $commands;
+    }
+
+    /**
+     * Add console command event listeners to the application.
+     */
+    protected function addListeners() {
+        $dispatcher = new EventDispatcher();
+        $this->addCommandTimer($dispatcher);
+        $this->setDispatcher($dispatcher);
+    }
+
+    /**
+     * Add a command timer listener and log the times to a file.
+     *
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
+     */
+    protected function addCommandTimer(EventDispatcherInterface $dispatcher) {
+        $home = getenv('HOME');
+        $logDirectory = $home ? "$home/.cms-builder" : "/tmp/cms-builder-logs";
+        CommandTimer::addListeners($dispatcher, function ($record) use ($logDirectory) {
+            if (!file_exists($logDirectory)) {
+                mkdir($logDirectory);
+            }
+            if (!is_dir($logDirectory)) {
+                // For some reason there's a file in place of ~/.cms-builder: abort.
+                return;
+            }
+
+            $file = fopen("$logDirectory/commands.log", 'a');
+            fputcsv($file, $record + [
+                'site' => Config::getSite(),
+            ]);
+            fclose($file);
+        });
     }
 
     /**
