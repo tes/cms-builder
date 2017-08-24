@@ -81,3 +81,9 @@ cms-builder build --rebuild-volumes
 ```
 ### Don't run the command with sudo
 Just don't.
+
+### Error access pages using Solr? (e.g: /student/what-to-study/accounting-finance)
+> SearchApiException: "0" Status: Request failed: Cannot assign requested address in SearchApiSolrConnection->checkResponse() (line 547 of /var/platform/.platform/local/builds/default/public/sites/all/modules/contrib/search_api_solr/includes/solr_connection.inc).
+```bash
+cms-builder post-build
+```
