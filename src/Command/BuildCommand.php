@@ -3,8 +3,6 @@
 namespace tes\CmsBuilder\Command;
 
 use GuzzleHttp\Client;
-use mglaman\Docker\Compose;
-use mglaman\Docker\Docker;
 use mglaman\PlatformDocker\Config as PlatformDockerConfig;
 use mglaman\PlatformDocker\Platform;
 use Symfony\Component\Console\Command\Command;
