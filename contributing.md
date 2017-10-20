@@ -11,10 +11,10 @@ Additionally, platform-docker depends on mglaman/docker-helper and mglamam/tools
 1. If changing cms-builder follow the usual TES PR workflow
 
 ### To make a platform-docker (or other dependency) change
-1. Fork [https://github.com/alexpott/platform-docker](https://github.com/alexpott/platform-docker) and clone your fork
+1. Fork https://github.com/tes/platform-docker and clone your fork
 1. To make and test a change to platform-docker ensure your working branch branches off from tes branch
 1. You can remove vendor/mglaman/platform-docker from the cms-builder checkout and symlink your checkout of platform-docker there
-1. Create a PR against [https://github.com/alexpott/platform-docker](https://github.com/alexpott/platform-docker) (the tes branch) to request a platform-docker change.
+1. Create a PR against https://github.com/tes/platform-docker (the tes branch) to request a platform-docker change.
 1. To submit a PR back to [https://github.com/mglamam/platform-docker](https://github.com/mglamam/platform-docker) create a new branch off develop, cherry-pick your commits from your other branch, push and create a PR against matt's project.
 
 If you are making changes to mglaman/docker-helper or mglamam/toolstack-helper follow a similar process as that for platform-docker.

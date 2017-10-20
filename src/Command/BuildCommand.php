@@ -3,8 +3,6 @@
 namespace tes\CmsBuilder\Command;
 
 use GuzzleHttp\Client;
-use mglaman\Docker\Compose;
-use mglaman\Docker\Docker;
 use mglaman\PlatformDocker\Config as PlatformDockerConfig;
 use mglaman\PlatformDocker\Platform;
 use Symfony\Component\Console\Command\Command;
@@ -32,6 +30,7 @@ class BuildCommand extends Command
             ->setName('build')
             ->addArgument('site', InputArgument::OPTIONAL, 'Builds a specific site if there repository has multiple')
             ->addOption('rebuild-volumes', 'r', InputOption::VALUE_NONE, 'Forces a rebuild of the code volume')
+            ->addOption('skip-check', null, InputOption::VALUE_NONE, 'Skips making a test request to the front page after the build')
             ->setDescription('Builds a working site from a clone of a CMS repo from TES github.');
     }
 
@@ -80,29 +79,31 @@ class BuildCommand extends Command
             number_format($event->getMemory() / 1048576, 2)
         ));
 
-        // Ensure the site is actually ready to use.
-        $check = TRUE;
-        $output->writeln('<comment>Ensuring the site is ready by getting front page.</comment>');
-        $times = 0;
-        $stopwatch->start('check');
-        $client = new Client();
-        $url = Platform::getUri();
-        while ($check) {
-            $res = $client->request('GET', $url);
-            if ($res->getStatusCode() == "200") {
-                $check = FALSE;
-            }
-            else {
-                $times++;
-                if ($times > 12) {
-                    $output->writeln('<error>Waited for 2 minutes and site still not available</error>');
+        if (!$input->getOption('skip-check')) {
+            // Ensure the site is actually ready to use.
+            $check = TRUE;
+            $output->writeln('<comment>Ensuring the site is ready by getting front page.</comment>');
+            $times = 0;
+            $stopwatch->start('check');
+            $client = new Client();
+            $url = Platform::getUri();
+            while ($check) {
+                $res = $client->request('GET', $url);
+                if ($res->getStatusCode() == "200") {
                     $check = FALSE;
                 }
+                else {
+                    $times++;
+                    if ($times > 12) {
+                        $output->writeln('<error>Waited for 2 minutes and site still not available</error>');
+                        $check = FALSE;
+                    }
+                }
             }
-        }
-        $event = $stopwatch->stop('check');
-        if ($output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
-          $output->writeln(sprintf('<info>Site check completed in %s seconds</info>', number_format($event->getDuration()/1000, 2)));
+            $event = $stopwatch->stop('check');
+            if ($output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
+              $output->writeln(sprintf('<info>Site check completed in %s seconds</info>', number_format($event->getDuration()/1000, 2)));
+            }
         }
         return 0;
     }
