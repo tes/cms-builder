@@ -39,7 +39,7 @@ class GetCommand extends Command
             $output->writeln('<info>No remote database to get as \'database\' key not set in .cms-builder.yml</info>');
             return;
         }
-        $local = Application::getCmsBuilderDirectory() . '/database.tar.gz';
+        $local = static::getBackupDbPath(Config::getSite());
 
         if (file_exists($local)) {
             $curl = curl_init($remote);
@@ -82,6 +82,26 @@ class GetCommand extends Command
         };
         $process->start($function);
         $process->wait();
+    }
+
+    /**
+     * Get the path to a site's backup database.
+     *
+     * @param string|null $site
+     *   (optional) The name of the site the database is for, if it has one.
+     *
+     * @return string
+     *   The absolute path to the database backup.
+     *
+     * @see Config::getSite()
+     */
+    public static function getBackupDbPath($site = null) {
+        $name = 'database';
+        if ($site) {
+            $name .= ".$site";
+        }
+        $name .= '.sql.gz';
+        return Application::getCmsBuilderDirectory() . "/$name";
     }
 
 }

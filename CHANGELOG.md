@@ -2,6 +2,7 @@
 
 ## Unreleased
 ### Fixed
+- Cache DBs per-site ([#26])
 - Drop all tables before importing DB ([#24]).
 
 ## 0.2.0 - 2017-10-18
@@ -13,3 +14,4 @@
 - Update platform-docker so that the Platform.sh php.ini is used by the Docker PHP container.
 
 [#24]: https://github.com/tes/cms-builder/issues/24
+[#26]: https://github.com/tes/cms-builder/issues/26

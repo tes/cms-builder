@@ -45,7 +45,7 @@ class LoadCommand extends Command
             return 1;
         }
 
-        $local = Application::getCmsBuilderDirectory() . '/database.tar.gz';
+        $local = GetCommand::getBackupDbPath(Config::getSite());
 
         if (!file_exists($local)) {
             $this->getApplication()->find('database:get')->run($input, $output);
