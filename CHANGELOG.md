@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## 0.2.1 - 2017-11-13
 ### Fixed
 - Cache DBs per-site ([#26])
 - Drop all tables before importing DB ([#24]).
