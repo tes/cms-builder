@@ -45,14 +45,14 @@ class LoadCommand extends Command
             return 1;
         }
 
-        $local = Application::getCmsBuilderDirectory() . '/database.tar.gz';
+        $local = GetCommand::getBackupDbPath(Config::getSite());
 
         if (!file_exists($local)) {
             $this->getApplication()->find('database:get')->run($input, $output);
         }
 
         $output->writeln("<info>Importing database from $local</info>");
-        $process = new Process("gunzip -c $local | `drush sql-connect`", Platform::webDir(), null, null, null);
+        $process = new Process("drush sql-drop -y && gunzip -c $local | `drush sql-connect`", Platform::webDir(), null, null, null);
         if ($output->getVerbosity() >= $output::VERBOSITY_VERBOSE) {
             $output->writeln($process->getCommandLine());
         }
