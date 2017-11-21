@@ -24,6 +24,8 @@ Once the changes have been merged into [https://github.com/tes/cms-builder](http
 
 Pre-requisite: Install and configure [Box2](https://github.com/box-project/box2)
 
+1. Update the version in [`src/Application.php`](src/Application.php) following [semantic versioning].
+1. Update [`CHANGELOG.md`](CHANGELOG.md).
 1. Remove composer.lock
 1. Run `composer install --no-dev`
 1. Run `box build`
@@ -38,3 +40,5 @@ Pre-requisite: Install and configure [Box2](https://github.com/box-project/box2)
    php -d "phar.readonly=false" $(which box) build
    ```
 1. Commit and push changes to master
+
+[semantic versioning]: https://semver.org/
