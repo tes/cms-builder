@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.3.0 - 2017-11-21
+### Changed
+- ([platform-docker]) Change nginx `client_max_body_size` to default to 50MB ([#29]).
+### Added
+- ([platform-docker]) nginx will read a config file in the project root called `nginx.conf` if available ([#29]).
+
 ## 0.2.1 - 2017-11-13
 ### Fixed
 - Cache DBs per-site ([#26])
@@ -11,7 +17,9 @@
 
 ## 0.1.0 - 2017-06-23
 ### Changed
-- Update platform-docker so that the Platform.sh php.ini is used by the Docker PHP container.
+- Update [platform-docker] so that the Platform.sh php.ini is used by the Docker PHP container.
 
 [#24]: https://github.com/tes/cms-builder/issues/24
 [#26]: https://github.com/tes/cms-builder/issues/26
+[#29]: https://github.com/tes/cms-builder/issues/29
+[platform-docker]: https://github.com/tes/platform-docker
