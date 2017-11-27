@@ -102,55 +102,24 @@ cms-builder post-build
 ```
 
 ### Cms-builder build or post-build fails
-Error message:
-```bash
-  [Exception]                                                      
 
-  Error executing docker command: mariadb uses an image, skipping  
-  solr uses an image, skipping                                     
-  mailcatcher uses an image, skipping                              
-  Building phpfpm                                                  
-  Bad response from Docker engine   
-```
+If you think the containers might have issues, check whether they're running:
 
-To list Docker images:
 ```bash
 docker ps
 ```
-The output of 'docker ps' looks something like this:
+
+If they aren't running, try to get them running:
 ```bash
-CONTAINER ID    IMAGE         COMMAND                  CREATED            STATUS            PORTS                             
-
-469f6c1061e6    nginx:1.9.0   "nginx -g 'daemon ..."   About an hour ago  Up About an hour  0.0.0.0:32791->80/tcp, 0.0.0.0:32790->443/tcp 
-
-    NAMES
-    cmssupplydistributionplatform_nginx_1
+cms-builder docker:up
 ```
 
-To stop a certain service in a specific container in docker, you can use the value for ‘CONTAINER ID’ or the ‘NAMES':
-```bash
-docker stop 469f6c1061e6
-```
-
-Try to stop Docker:
+If this fails, make sure the containers are stopped:
+to stop Docker:
 ```bash
 cms-builder docker:stop
 ```
-
-If stopping Docker fails, you might see this:
-```bash
-[Exception]                                                                                                                   
-  Error executing docker command: Stopping cmssupplydistributionplatform_nginx_1       ...                                     
-Stopping cmssupplydistributionplatform_phpfpm_1      ... error
-Stopping cmssupplydistributionplatform_mailcatcher_1 ... error
-Stopping cmssu  
-  pplydistributionplatform_mariadb_1     ... error   ... error
-
-  ERROR: for cmssupplydistributionplatform_nginx_1  UnixHTTPConnectionPool(host='localhost', port=None): Read timed out. (read timeout=70)                                                          
-  An HTTP request took too long to complete. Retry with --verbose to obtain debug information.                                 
-  If you encounter this issue regularly because of slow network conditions, consider setting COMPOSE_HTTP_TIMEOUT to a higher value (current value: 60).            
-```
-In this case, you can try to remove the docker directory (this is where shared directories and files go including the database!!!):
+Now you can try to remove the docker directory (Be careful!: this is where shared directories and files go including the database!!!):
 ```bash
 rm -rf docker
 ```
