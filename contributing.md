@@ -2,7 +2,7 @@
 ## Background
 This project relies on heavily on the platform-docker project. Most of the code in cms-builder is about orchestrating a platform-docker build command with TES specific business logic.
 
-To make changes to the docker containers you will need to contribute to the platform-docker project. At the moment we are using a fork of the project: [https://github.com/alexpott/platform-docker](https://github.com/alexpott/platform-docker)
+To make changes to the docker containers you will need to contribute to the platform-docker project. At the moment we are using a fork of the project: [https://github.com/tes/platform-docker](https://github.com/tes/platform-docker)
 
 Additionally, platform-docker depends on mglaman/docker-helper and mglamam/toolstack-helper both of these are forked in the same way and are in [https://github.com/alexpott](https://github.com/alexpott)
 
