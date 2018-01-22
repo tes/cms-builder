@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.0 - 2018-01-21
+### Added
+- ([platform-docker]) Added a PHP 7.1 Docker file.
+
 ## 0.3.0 - 2017-11-21
 ### Changed
 - ([platform-docker]) Change nginx `client_max_body_size` to default to 50MB ([#29]).
