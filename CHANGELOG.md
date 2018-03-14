@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.5 - 2018-03-14
+### Changed
+- ([platform-docker]) Proxy RZ to the right service.
+
 ## 0.4.4 - 2018-03-14
 ### Changed
 - ([platform-docker]) Update 7.2 docker file.

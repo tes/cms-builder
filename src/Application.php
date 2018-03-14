@@ -32,7 +32,7 @@ use tes\CmsBuilder\Command\SelfUpdateCommand;
 class Application extends ParentApplication
 {
 
-    const VERSION = '0.4.4';
+    const VERSION = '0.4.5';
 
     /**
      * {@inheritdoc}
