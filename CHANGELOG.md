@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.4.3 - 2018-03-14
+### Changed
+- ([platform-docker]) Update xdebug ports.
+### Added
+- ([platform-docker]) Added a PHP 7.2 Docker file.
+
 ## 0.4.0 - 2018-01-21
 ### Added
 - ([platform-docker]) Added a PHP 7.1 Docker file.
