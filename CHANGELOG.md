@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.4 - 2018-03-14
+### Changed
+- ([platform-docker]) Update 7.2 docker file.
+
 ## 0.4.3 - 2018-03-14
 ### Changed
 - ([platform-docker]) Update xdebug ports.
