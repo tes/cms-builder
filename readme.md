@@ -101,6 +101,9 @@ Just don't.
 cms-builder post-build
 ```
 
+### "You are in a project using an old file structure, from previous versions of the Platform.sh CLI."
+Remove ".platform-project" locally from the project route.
+
 ### Cms-builder build or post-build fails
 
 If you think the containers might have issues, check whether they're running:
