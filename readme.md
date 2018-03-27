@@ -130,3 +130,6 @@ Then build again:
 ```bash
 cms-builder build
 ```
+
+If all the above fails, you can try to stop and remove all docker containers and images:
+(Source: Scott and http://blog.baudson.de/blog/stop-and-remove-all-docker-containers-and-images)
